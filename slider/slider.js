@@ -22,8 +22,7 @@
                     id = self.sid();
                 dom.id = id;
                 sliders.push({
-                    id: id,
-                    effect: 'fadein'
+                    id: id
                 })
             }
             self.sliders = sliders;

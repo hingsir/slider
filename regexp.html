@@ -1,31 +1,504 @@
 <!doctype html>
 <html>
+
 <head>
-    <meta charset='utf-8'/>
+    <meta charset='utf-8' />
     <title>正则表达式</title>
-    <link rel='stylesheet' href='regexp/main.css'/>
-    <link rel='stylesheet' href='slider/slider.css'/>
-    <link rel='stylesheet' href='libs/highlight/styles/github-gist.css'/>
+    <link rel='stylesheet' href='regexp/main.css' />
+    <link rel='stylesheet' href='slider/slider.css' />
+    <link rel='stylesheet' href='../libs/highlight/styles/github-gist.css' />
 </head>
+
 <body>
     <div id='wrap'>
         <div class='slide current'>
             <div class="content center">
-                <p class='subject'>正则表达式</p>
+                <p class='subject'>正则表达式那点事</p>
                 <p class='author right'>车兴友 2015.10.1</p>
             </div>
         </div>
         <div class='slide'>
             <div class="content">
                 <h1>主要内容</h1>
-                <ul class='chapter fz24 mt100'>
+                <ul class='chapter fz24 mt40'>
                     <li>正则表达式基础知识</li>
-                    <li>正则在 Javascript 中的应用</li>
+                    <li>正则在 JavaScript 中的应用</li>
                     <li>feather 中的几个正则实例</li>
                 </ul>
             </div>
         </div>
-        <div class='slide'>
+        <div class="slide">
+            <div class="content">
+                <h1>正则表达式是什么？</h1>
+                <p class='mt40'>
+                    正则表达式 Regular Expression，在代码中常简写为regex、regexp或RE。
+                </p>
+                <p>
+                    是一种文本模式，使用单个字符串来描述、匹配一系列符合某个句法规则的字符串。
+                </p>
+                <p>大多数编程语言都支持正则表达式，本文特指 JavaScript 中的正则。</p>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="content">
+                <h1>正则表达式有什么用？</h1>
+                <ul class="mt40">
+                    <li>测试字符串</li>
+                    <li>替换文本</li>
+                    <li>提取子字符串</li>
+                </ul>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="content">
+                <h1>正则表达式怎么用？</h1>
+                <p class='mt100 center'><img src="regexp/shuozhongdian.png" alt=""></p>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="content">
+                <h1>JavaScript RegExp对象</h1>
+                <p class='mt40'>创建RegExp对象有两种方法</p>
+                <ul>
+                    <li>对象字面量</li>
+                    <pre><code>var RE = /source/flags // /\s*/img</code></pre>
+                    <li>构造方法</li>
+                    <pre><code>var RE = new RegExp(source,flags) // new RegExp('\\s*','img')</code></pre> flags可选的值有 "g"、"i" 和 "m"，分别用于指定全局匹配、区分大小写的匹配和多行匹配。
+                </ul>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="content">
+                <h1>JavaScript RegExp对象</h1>
+                <p class='mt40'>RegExp对象属性</p>
+                <ul>
+                    <li>global，RegExp 对象是否具有标志 g</li>
+                    <li>ignoreCase，RegExp 对象是否具有标志 i</li>
+                    <li>multiline，RegExp 对象是否具有标志 m</li>
+                    <li>lastIndex，一个整数，标示开始下一次匹配的字符位置</li>
+                    <li>source，RegExp 对象的源文本</li>
+                    <li>flags，RegExp 对象的标志（EMACScript 6 新增属性）。ES5中可用下面的方法获取
+                        <pre><code>var RE = /pahf/img
+var flags = RE.toString().match(/[img]*$/)[0]// "gim"
+</code></pre>
+                </ul>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="content">
+                <h1>JavaScript RegExp对象</h1>
+                <p class='mt40'>RegExp对象有三个方法</p>
+                <ul>
+                    <li>compile( )，用于脚本执行过程中编译或改变正则表达式</li>
+                    <pre><code>var RE = /\d+/g
+console.log(RE.test('123'),RE) //true /\d+/g
+RE.compile(/[a-zA-Z]+/g)
+console.log(RE.test('123'),RE) //false /[a-zA-Z]+/g
+</code></pre>
+                    <li>test( )，用于测试目标文本是否匹配规则，返回true/false</li>
+                    <pre><code>var b = /\d+/.test('123abc') // true</code></pre>
+                    <li>exec( )，用于检索字符串中指定的值。返回找到的值，并确定其位置。返回值是一个数组/null</li>
+                    <pre><code>var RE = /(pa)hf/img, str ='hello,pahf,pahf,hello', result
+while((result=RE.exec(str))!=null){
+   console.log(result,RE.lastIndex) 
+}//["pahf", "pa", index: 6, input: "hello,pahf,pahf,hello"] 10
+ //["pahf", "pa", index: 11, input: "hello,pahf,pahf,hello"] 15
+</code></pre>
+                </ul>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="content">
+                <h1>JavaScript RegExp对象</h1>
+                <p class='mt40'>String 对象与正则相关的方法</p>
+                <ul>
+                    <li>search( )，返回第一个匹配的子串的起始位置（无匹配返回-1），忽略g标志</li>
+                    <pre><code>"abc123rst234xyz".search(/\d+/g) //3
+</code></pre>
+                    <li>match( )，找到一个或多个正则表达式的匹配。不包含子表达式及位置信息。</li>
+                    <pre><code>"hello,pahf,pahf,hello".match(/(pa)hf/img) //["pahf", "pahf"]</code></pre>
+                    <li>replace( )，字符串替换</li>
+                    <pre><code>"abc123rst234xyz".replace(/\d+/g,",") //"abc,rst,xyz"
+</code></pre>
+                    <li>split( )，分割字符串为字符数组。</li>
+                    <pre><code>"abc123rst234xyz".split(/\d+/) //["abc", "rst", "xyz"]</code></pre>
+                </ul>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="content">
+                <h1>特殊字符</h1>
+                <p class='mt20'>若需要匹配这些字符，需要用"\"进行转义</p>
+                <table class="dataintable">
+                    <tbody>
+                        <tr>
+                            <th style="width:100px;">
+                                特殊字符
+                            </th>
+                            <th>
+                                注释
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>$</p>
+                            </td>
+                            <td>
+                                <p>匹配输入字符串结尾的位置。如果设置了 <b>RegExp</b> 对象的 <b>Multiline</b> 属性，那么 $ 还匹配 \n 或 \r 前面的位置。若要匹配 $ 字符本身，请使用 \$。</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>( )</p>
+                            </td>
+                            <td>
+                                <p>标记子表达式的开始和结束。可以捕获子表达式以供以后使用。若要匹配这两个字符，请使用 \( 和 \)。</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p> <b>*</b> </p>
+                            </td>
+                            <td>
+                                <p>零次或多次匹配前面的字符或子表达式。若要匹配 * 字符，请使用 \*。</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p> <b>+</b> </p>
+                            </td>
+                            <td>
+                                <p>一次或多次匹配前面的字符或子表达式。若要匹配 + 字符，请使用 \+。</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p> <b>.</b> </p>
+                            </td>
+                            <td>
+                                <p>匹配除换行符 \n 之外的任何单个字符。若要匹配 .，请使用 \。</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>[ ]</p>
+                            </td>
+                            <td>
+                                <p>标记中括号表达式的开始。若要匹配这些字符，请使用 \[ 和 \]。 </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>?</p>
+                            </td>
+                            <td>
+                                <p>零次或一次匹配前面的字符或子表达式，或指示“非贪心”限定符。若要匹配 ? 字符，请使用 \?。</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>\</p>
+                            </td>
+                            <td>
+                                <p>将下一字符标记为特殊字符、文本、反向引用或八进制转义符。例如，字符 n 匹配字符 n。\n 匹配换行符。序列 \\ 匹配 \，序列 \( 匹配 (。</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>/</p>
+                            </td>
+                            <td>
+                                <p>表示文本正则表达式的开始或结束。若要匹配 / 字符，请使用 \/。</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>^</p>
+                            </td>
+                            <td>
+                                <p>匹配输入字符串开始处的位置，但在中括号表达式中使用的情况除外，在那种情况下它对字符集求反。若要匹配 ^ 字符本身，请使用 \^。</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>{ }</p>
+                            </td>
+                            <td>
+                                <p>标记限定符表达式的开始。若要匹配这些字符，请使用 \{ 和 \}。</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>|</p>
+                            </td>
+                            <td>
+                                <p>指出在两个项之间进行选择。要匹配 |，请使用 \|。</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="content">
+                <h1>元字符</h1>
+                <p class='mt40'>元字符（Metacharacter）是拥有特殊含义的字符：</p>
+                <table class="dataintable">
+                    <tbody>
+                        <tr>
+                            <th style="width:15%">元字符</th>
+                            <th style="width:35%">描述</th>
+                            <th style="width:15%">元字符</th>
+                            <th style="width:35%">描述</th>
+                        </tr>
+                        <tr>
+                            <td>.</td>
+                            <td>查找单个字符，除了换行和行结束符。</td>
+                            <td>\0</td>
+                            <td>查找 NULL 字符。</td>
+                        </tr>
+                        <tr>
+                            <td>\w</td>
+                            <td>查找单词字符。</td>
+                            <td>\n</td>
+                            <td>查找换行符。</td>
+                        </tr>
+                        <tr>
+                            <td>\W</td>
+                            <td>查找非单词字符。</td>
+                            <td>\f</td>
+                            <td>查找换页符。</td>
+                        </tr>
+                        <tr>
+                            <td>\d</td>
+                            <td>查找数字。</td>
+                            <td>\r</td>
+                            <td>查找回车符。</td>
+                        </tr>
+                        <tr>
+                            <td>\D</td>
+                            <td>查找非数字字符。</td>
+                            <td>\t</td>
+                            <td>查找制表符。</td>
+                        </tr>
+                        <tr>
+                            <td>\s</td>
+                            <td>查找空白字符。</td>
+                            <td>\v</td>
+                            <td>查找垂直制表符。</td>
+                        </tr>
+                        <tr>
+                            <td>\S</td>
+                            <td>查找非空白字符。</td>
+                            <td>\xxx</td>
+                            <td>查找以八进制数 xxx 规定的字符。</td>
+                        </tr>
+                        <tr>
+                            <td>\b</td>
+                            <td>匹配单词边界。</td>
+                            <td>\xdd</td>
+                            <td>查找以十六进制数 dd 规定的字符。</td>
+                        </tr>
+                        <tr>
+                            <td>\B</td>
+                            <td>匹配非单词边界。</td>
+                            <td>\uxxxx</td>
+                            <td>查找以十六进制数 xxxx 规定的 Unicode 字符。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="content">
+                <h1>方括号</h1>
+                <p class='mt40'>方括号用于查找某个范围内的字符</p>
+                <table class="dataintable">
+                    <tbody>
+                        <tr>
+                            <th style="width:20%">表达式</th>
+                            <th>描述</th>
+                        </tr>
+                        <tr>
+                            <td>[abc]</td>
+                            <td>查找方括号之间的任何字符。</td>
+                        </tr>
+                        <tr>
+                            <td>[^abc]</td>
+                            <td>查找任何不在方括号之间的字符。</td>
+                        </tr>
+                        <tr>
+                            <td>[0-9]</td>
+                            <td>查找任何从 0 至 9 的数字。</td>
+                        </tr>
+                        <tr>
+                            <td>[a-z]</td>
+                            <td>查找任何从小写 a 到小写 z 的字符。</td>
+                        </tr>
+                        <tr>
+                            <td>[A-Z]</td>
+                            <td>查找任何从大写 A 到大写 Z 的字符。</td>
+                        </tr>
+                        <tr>
+                            <td>[A-z]</td>
+                            <td>查找任何从大写 A 到小写 z 的字符。</td>
+                        </tr>
+                        <tr>
+                            <td>(red|blue|green)</td>
+                            <td>查找任何指定的选项。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="content">
+                <h1>定位</h1>
+                <ul class="mt40">
+                    <li>^ 匹配输入字符串开始的位置。如果设置了 RegExp 对象的 Multiline 属性，^ 还会与 \n 或 \r 之后的位置匹配。</li>
+                    <li>$ 匹配输入字符串结尾的位置。如果设置了 RegExp 对象的 Multiline 属性，$ 还会与 \n 或 \r 之前的位置匹配。</li>
+                    <li>\b 匹配一个字边界， 空格、段落首行、段落末尾、逗号、句号 等符号作为边界，值得注意的是，分隔符“-”也可以作为边界</li>
+                    <li>\B 非字边界匹配。</li>
+                </ul>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="content">
+                <h1>量词</h1>
+                <p class="mt40">量词分为贪婪量词，惰性量词，支配量词（js不支持）</p>
+                <table class="dataintable">
+                    <tbody>
+                        <tr>
+                            <th style="width:15%">贪婪量词</th>
+                            <th style="width:15%">惰性量词</th>
+                            <th style="width:15%">支配量词</th>
+                            <th>描述</th>
+                        </tr>
+                        <tr>
+                            <td>n+</td>
+                            <td>n+?</td>
+                            <td>n++</td>
+                            <td>匹配任何包含至少一个 n 的字符串。</td>
+                        </tr>
+                        <tr>
+                            <td>n*</td>
+                            <td>n*？</td>
+                            <td>n*+</td>
+                            <td>匹配任何包含零个或多个 n 的字符串。</td>
+                        </tr>
+                        <tr>
+                            <td>n?</td>
+                            <td>n??</td>
+                            <td>n?+</td>
+                            <td>匹配任何包含零个或一个 n 的字符串。</td>
+                        </tr>
+                        <tr>
+                            <td>n{X}</td>
+                            <td>n{X}?</td>
+                            <td>n{X}+</td>
+                            <td>匹配包含 X 个 n 的序列的字符串。</td>
+                        </tr>
+                        <tr>
+                            <td>n{X,Y}</td>
+                            <td>n{X,Y}?</td>
+                            <td>n{X,Y}+</td>
+                            <td>匹配包含 X 或 Y 个 n 的序列的字符串。</td>
+                        </tr>
+                        <tr>
+                            <td>n{X,}</td>
+                            <td>n{X,}?</td>
+                            <td>n{X,}+</td>
+                            <td>匹配包含至少 X 个 n 的序列的字符串。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="content">
+                <h1>子模式（分组）和后向引用</h1>
+                <ul class="mt40">
+                    <li>可以使用“(”和“)”将模式中的子字符串括起来，就形成一个子模式。</li>
+                    <li>子模式可以嵌套使用。</li>
+                    <li>在查找中，使用后向引用来代表一个子模式，其语法是“\数字”；而在替换中，其语法是“$数字”</li>
+                </ul>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="content">
+                <h1>非捕获组和零宽断言</h1>
+                <ul class="mt40">
+                    <li>?:n 匹配字符串n，但不捕获匹配结果，也不会分配组号。</li>
+                    <li>?=n 匹配任何其后紧接指定字符串 n 的字符串。</li>
+                    <li>?!n 匹配任何其后没有紧接指定字符串 n 的字符串。</li>
+                    <p class="mt40">举个栗子：给一串数字增加千分位分隔符</p>
+                    <p>如 12345678.99 => 12,345,678.99</p>
+                    <pre class="hidden"><code>"12345678.99".replace(/(\d{1,3})(?=(\d{3})+$|(\d{3})+\.)/g,"$1,");</code></pre>
+                </ul>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="content">
+                <h1>问号用法小结</h1>
+                <ul class="mt40">
+                    <li>原文 \?</li>
+                    <li>量词</li>
+                    <li>惰性匹配标志</li>
+                    <li>非捕获组</li>
+                    <li>零宽断言</li>
+                </ul>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="content">
+                <h1>“或”匹配（分支）</h1>
+                <p class="mt40">
+                    使用“|”将一个表达式拆分成两部分“reg1|reg2”，它的意思是：匹配所有符合表达式 reg1 的文本 或者 符合表达式 reg2 的文本
+                </p>
+                <pre><code>//将既不在引号內又不在注释内的abc替换成123
+var str = '"abc"abc\'abc\'//abc\r\n/*abc*/'
+str.replace(/"[^"]*"|'[^']*'|\/\/[^\r\n]*|\/\*[\s\S]*?\*\/|(abc)/g, function($, $1){
+  if($1){
+    return '123';
+  }
+  return $;
+});
+</code></pre>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="content">
+                <h1>正则在 JavaScript 中的应用</h1>
+                <ul class="mt40">
+                    <li>表单验证</li>
+                    <li>模版引擎 </li>
+                    <p><a target="_blank" href="http://ejohn.org/blog/javascript-micro-templating/">John Resig</a> , common/mod/template/template.js </p>
+                    <li>feather 的核心工具</li>
+                </ul>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="content">
+                <h1>feather 中的几个正则实例</h1>
+                <ul class="mt40">
+                    <li>resource 分析</li>
+                    <pre><code>/[\r\n]*(?:&lt;!--[\s\S]*?--&gt;|&lt;script([^&gt;]*?src=(['"])((?:&lt;\?[\s\S]+?\?&gt;)?.+?)\2[\s\S]*?)&gt;\s*&lt;\/script&gt;|
+&lt;link([^&gt;]*?href=(['"])((?:&lt;\?[\s\S]+?\?&gt;)?.+?)\5[\s\S]*?)&gt;)[\r\n]*/ig</code></pre>
+                    <li>require 分析</li>
+                    <pre><code>/"(?:[^\\"\r\n\f]|\\[\s\S])*"|'(?:[^\\'\n\r\f]|\\[\s\S])*'|(?:\/\/[^\r\n\f]+|\/\*[\s\S]*?(?:\*\/|$))|
+require\.async\(([\s\S]+?)(?=,\s*function\(|\))/g</code></pre>
+                    <li>component 分析</li>
+                    <pre><code>/&lt;!--(?:(?!\[if [^\]]+\]&gt;)[\s\S])*?--&gt;|(&lt;\?php (?:(?!\?&gt;)[\s\S])*?)\$this-&gt;(component|load)\(\s*['"]([^'"]+)['"]([\s\S]*?(?:;|$))|
+&lt;component(?: [\s\S]*?name=['"]([^'"]+)['"])?[^&gt;]*&gt;(?:([\s\S]*?)&lt;\/component&gt;)?/ig</code></pre>
+                </ul>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="content">
+                <p class="center subject">Q & A</p>
+            </div>
+        </div>
+        <!-- <div class='slide'>
             <div class="content">
                 <h1>例子1：找出所有於永健中的林永健</h1>
                 <div contenteditable="true" class='panel mt40 target mb40'>
@@ -39,38 +512,39 @@
                 <button class='btn-exec' data-cb='callback_1'>来一发</button>
                 <div class='panel mt40 result'></div>
             </div>
-        </div>
+        </div> -->
     </div>
-    <script type="text/javascript" src='libs/jquery-1.10.2.js'></script>
-    <script type="text/javascript" src='libs/highlight/highlight.pack.js'></script>
+    <script type="text/javascript" src='../libs/jquery-1.10.2.js'></script>
+    <script type="text/javascript" src='../libs/highlight/highlight.pack.js'></script>
     <script type="text/javascript" src='slider/slider.js'></script>
     <script type="text/javascript">
-        $('#wrap').slider();
-        hljs.initHighlightingOnLoad();
+    $('#wrap').slider();
+    hljs.initHighlightingOnLoad();
 
 
-        function callback_1(dom,RE,target){
+    function callback_1(dom, RE, target) {
 
-            dom.siblings('.result').html(target.replace(RE,function($){
-                return '<span style="color:red;">' + $ + '</span>';
-            }))
+        dom.siblings('.result').html(target.replace(RE, function($) {
+            return '<span style="color:red;">' + $ + '</span>';
+        }))
+    }
+
+    $('.btn-exec').click(function() {
+        var $this = $(this),
+            regStr = $this.siblings('.regStr').val(),
+            target = $this.siblings('.target').html(),
+            RE, source, flags;
+        if (!regStr) return;
+        /*source = regStr.replace(/\//,'').replace(/\/[img]*$/,'')
+        flags = regStr.match(/\/([img]*)$/)[1];
+        RE = new RegExp(source,flags);*/
+        RE = eval(regStr);
+        var callback = $(this).attr('data-cb');
+        if (callback && window[callback]) {
+            window[callback]($this, RE, target)
         }
-
-        $('.btn-exec').click(function(){
-            var $this = $(this),
-                regStr = $this.siblings('.regStr').val(),
-                target = $this.siblings('.target').html(),
-                RE,source,flags;
-            if(!regStr) return;
-            source = regStr.replace(/\//,'').replace(/\/[img]*$/,'')
-            flags = regStr.match(/\/([img]*)$/)[1];
-            RE = new RegExp(source,flags);
-            var callback = $(this).attr('data-cb')
-            if(callback && window[callback]){
-                window[callback]($this,RE,target)
-            }
-        })
-
+    })
     </script>
 </body>
+
 </html>

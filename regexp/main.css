@@ -19,11 +19,14 @@ fz24{
 .mb40{
     margin-bottom: 40px;
 }
+.red{
+    color:red;
+}
 
 html,body{
     width: 100%;
     height:100%;
-    font: 20px "Hiragino Sans GB", "Microsoft Yahei", "Helvetica Neue", Helvetica, sans-serif, tahoma, arial;
+    font: 18px "Hiragino Sans GB", "Microsoft Yahei", "Helvetica Neue", Helvetica, sans-serif, tahoma, arial;
 }
 
 #wrap{
@@ -31,15 +34,22 @@ html,body{
     height:100%;
     position: relative;
     /*background: rgb(39,40,34);*/
-    background: url('bg.jpg');
+    background: url('bg.jpg') repeat-y;
     color: #fff;
+    line-height: 50px;
 }
+
+pre{
+    line-height: 20px;
+    font-size: 14px;
+}
+
 .slide .content{
     position: absolute;
-    top:10%;
+    top:5%;
     left: 10%;
     width: 80%;
-    height:80%;
+    height:90%;
 }
 
 .subject{
@@ -64,13 +74,15 @@ html,body{
     width:60%;
     color: #333;
     background: #ccc;
+    line-height: 30px;
 }
 
 .regStr{
     vertical-align: middle;
     width: 60%;
-    height: 40px;
-    font-size: 30px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 20px;
     background: #ccc;
 }
 .btn-exec{
@@ -82,7 +94,43 @@ html,body{
     box-shadow: 0 1px 0px #56baf2 inset;
     background: #2fa7ea;
     color: #fff !important;
-    font-size: 14px;
     padding: 0 14px;
     cursor: pointer;
+}
+a{
+    color: #2fa7ea !important;
+}
+table.dataintable {
+    margin-top: 10px;
+    border-collapse: collapse;
+    border: 1px solid #aaa;
+    width: 100%;
+}
+
+table {
+    display: table;
+    border-collapse: separate;
+    border-spacing: 2px;
+    border-color: gray;
+}
+tr {
+    display: table-row;
+    vertical-align: inherit;
+    border-color: inherit;
+    line-height: 30px;
+}
+table.dataintable td {
+    vertical-align: text-top;
+    padding: 2px 15px 2px 6px;
+    border: 1px solid #aaa;
+    font-size: 14px;
+}
+table.dataintable th {
+    vertical-align: baseline;
+    padding: 5px 15px 5px 6px;
+    border: 1px solid #aaa;
+    text-align: left;
+}
+.hidden {
+    display: none;
 }

@@ -13,8 +13,8 @@
     <div id='wrap'>
         <div class='slide current'>
             <div class="content center">
-                <p class='subject'>正则表达式那点事</p>
-                <p class='author right'>车兴友 2015.10.1</p>
+                <p class='subject'>正则表达式</p>
+                <p class='author right'>车兴友 <span id='now'/></p>
             </div>
         </div>
         <div class='slide'>
@@ -22,8 +22,8 @@
                 <h1>主要内容</h1>
                 <ul class='chapter fz24 mt40'>
                     <li>正则表达式基础知识</li>
-                    <li>正则在 JavaScript 中的应用</li>
-                    <li>feather 中的几个正则实例</li>
+                    <li>正则在我大前端中的应用</li>
+                    <li>练习题</li>
                 </ul>
             </div>
         </div>
@@ -63,7 +63,7 @@
                     <li>对象字面量</li>
                     <pre><code>var RE = /source/flags // /\s*/img</code></pre>
                     <li>构造方法</li>
-                    <pre><code>var RE = new RegExp(source,flags) // new RegExp('\\s*','img')</code></pre> flags可选的值有 "g"、"i" 和 "m"，分别用于指定全局匹配、区分大小写的匹配和多行匹配。
+                    <pre><code>var RE = new RegExp(source,flags) // new RegExp('\\s*','img')</code></pre> flags可选的值有 "g"、"i" 和 "m"，分别用于指定全局匹配、不区分大小写的匹配和多行匹配。
                 </ul>
             </div>
         </div>
@@ -100,7 +100,7 @@ console.log(RE.test('123'),RE) //false /[a-zA-Z]+/g
                     <li>exec( )，用于检索字符串中指定的值。返回找到的值，并确定其位置。返回值是一个数组/null</li>
                     <pre><code>var RE = /(pa)hf/img, str ='hello,pahf,pahf,hello', result
 while((result=RE.exec(str))!=null){
-   console.log(result,RE.lastIndex) 
+   console.log(result,RE.lastIndex)
 }//["pahf", "pa", index: 6, input: "hello,pahf,pahf,hello"] 10
  //["pahf", "pa", index: 11, input: "hello,pahf,pahf,hello"] 15
 </code></pre>
@@ -138,6 +138,14 @@ while((result=RE.exec(str))!=null){
                             <th>
                                 注释
                             </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>^</p>
+                            </td>
+                            <td>
+                                <p>匹配输入字符串开始处的位置，但在中括号表达式中使用的情况除外，在那种情况下它对字符集求反。若要匹配 ^ 字符本身，请使用 \^。</p>
+                            </td>
                         </tr>
                         <tr>
                             <td>
@@ -209,14 +217,6 @@ while((result=RE.exec(str))!=null){
                             </td>
                             <td>
                                 <p>表示文本正则表达式的开始或结束。若要匹配 / 字符，请使用 \/。</p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <p>^</p>
-                            </td>
-                            <td>
-                                <p>匹配输入字符串开始处的位置，但在中括号表达式中使用的情况除外，在那种情况下它对字符集求反。若要匹配 ^ 字符本身，请使用 \^。</p>
                             </td>
                         </tr>
                         <tr>
@@ -303,7 +303,7 @@ while((result=RE.exec(str))!=null){
                             <td>\B</td>
                             <td>匹配非单词边界。</td>
                             <td>\uxxxx</td>
-                            <td>查找以十六进制数 xxxx 规定的 Unicode 字符。</td>
+                            <td>查找以十六进制数 xxxx 规定的 Unicode 字符。汉字：[\u4e00-\u9fa5]</td>
                         </tr>
                     </tbody>
                 </table>
@@ -343,10 +343,6 @@ while((result=RE.exec(str))!=null){
                             <td>[A-z]</td>
                             <td>查找任何从大写 A 到小写 z 的字符。</td>
                         </tr>
-                        <tr>
-                            <td>(red|blue|green)</td>
-                            <td>查找任何指定的选项。</td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -365,49 +361,42 @@ while((result=RE.exec(str))!=null){
         <div class="slide">
             <div class="content">
                 <h1>量词</h1>
-                <p class="mt40">量词分为贪婪量词，惰性量词，支配量词（js不支持）</p>
+                <p class="mt40">量词分为贪婪量词，惰性量词</p>
                 <table class="dataintable">
                     <tbody>
                         <tr>
                             <th style="width:15%">贪婪量词</th>
                             <th style="width:15%">惰性量词</th>
-                            <th style="width:15%">支配量词</th>
                             <th>描述</th>
                         </tr>
                         <tr>
                             <td>n+</td>
                             <td>n+?</td>
-                            <td>n++</td>
                             <td>匹配任何包含至少一个 n 的字符串。</td>
                         </tr>
                         <tr>
                             <td>n*</td>
                             <td>n*？</td>
-                            <td>n*+</td>
                             <td>匹配任何包含零个或多个 n 的字符串。</td>
                         </tr>
                         <tr>
                             <td>n?</td>
                             <td>n??</td>
-                            <td>n?+</td>
                             <td>匹配任何包含零个或一个 n 的字符串。</td>
                         </tr>
                         <tr>
                             <td>n{X}</td>
                             <td>n{X}?</td>
-                            <td>n{X}+</td>
                             <td>匹配包含 X 个 n 的序列的字符串。</td>
                         </tr>
                         <tr>
                             <td>n{X,Y}</td>
                             <td>n{X,Y}?</td>
-                            <td>n{X,Y}+</td>
                             <td>匹配包含 X 或 Y 个 n 的序列的字符串。</td>
                         </tr>
                         <tr>
                             <td>n{X,}</td>
                             <td>n{X,}?</td>
-                            <td>n{X,}+</td>
                             <td>匹配包含至少 X 个 n 的序列的字符串。</td>
                         </tr>
                     </tbody>
@@ -428,9 +417,9 @@ while((result=RE.exec(str))!=null){
             <div class="content">
                 <h1>非捕获组和零宽断言</h1>
                 <ul class="mt40">
-                    <li>?:n 匹配字符串n，但不捕获匹配结果，也不会分配组号。</li>
-                    <li>?=n 匹配任何其后紧接指定字符串 n 的字符串。</li>
-                    <li>?!n 匹配任何其后没有紧接指定字符串 n 的字符串。</li>
+                    <li>(?:n) 匹配字符串n，但不捕获匹配结果，也不会分配组号。</li>
+                    <li>(?=n) 匹配任何其后紧接指定字符串 n 的字符串。</li>
+                    <li>(?!n) 匹配任何其后没有紧接指定字符串 n 的字符串。</li>
                     <p class="mt40">举个栗子：给一串数字增加千分位分隔符</p>
                     <p>如 12345678.99 => 12,345,678.99</p>
                     <pre class="hidden"><code>"12345678.99".replace(/(\d{1,3})(?=(\d{3})+$|(\d{3})+\.)/g,"$1,");</code></pre>
@@ -451,7 +440,7 @@ while((result=RE.exec(str))!=null){
         </div>
         <div class="slide">
             <div class="content">
-                <h1>“或”匹配（分支）</h1>
+                <h1>“或”匹配（分支，候选）</h1>
                 <p class="mt40">
                     使用“|”将一个表达式拆分成两部分“reg1|reg2”，它的意思是：匹配所有符合表达式 reg1 的文本 或者 符合表达式 reg2 的文本
                 </p>
@@ -468,34 +457,47 @@ str.replace(/"[^"]*"|'[^']*'|\/\/[^\r\n]*|\/\*[\s\S]*?\*\/|(abc)/g, function($, 
         </div>
         <div class="slide">
             <div class="content">
-                <h1>正则在 JavaScript 中的应用</h1>
+                <h1>正则在我大前端中的应用</h1>
                 <ul class="mt40">
                     <li>表单验证</li>
-                    <li>模版引擎 </li>
-                    <p><a target="_blank" href="http://ejohn.org/blog/javascript-micro-templating/">John Resig</a> , common/mod/template/template.js </p>
+                    <li>jQuery 属性选择器增强</li>
+                    <li>模版引擎</li>
+                    <p><a target="_blank" href="http://ejohn.org/blog/javascript-micro-templating/">John Resig</a>  <a target='_blank' href='https://github.com/feather-team/feather-ui/blob/master/template/template.js'>common/mod/template/template.js</a> </p>
                     <li>feather 的核心工具</li>
                 </ul>
             </div>
         </div>
-        <div class="slide">
+        <!-- <div class="slide">
             <div class="content">
                 <h1>feather 中的几个正则实例</h1>
                 <ul class="mt40">
                     <li>resource 分析</li>
                     <pre><code>/[\r\n]*(?:&lt;!--[\s\S]*?--&gt;|&lt;script([^&gt;]*?src=(['"])((?:&lt;\?[\s\S]+?\?&gt;)?.+?)\2[\s\S]*?)&gt;\s*&lt;\/script&gt;|
-&lt;link([^&gt;]*?href=(['"])((?:&lt;\?[\s\S]+?\?&gt;)?.+?)\5[\s\S]*?)&gt;)[\r\n]*/ig</code></pre>
+        &lt;link([^&gt;]*?href=(['"])((?:&lt;\?[\s\S]+?\?&gt;)?.+?)\5[\s\S]*?)&gt;)[\r\n]*/ig</code></pre>
                     <li>require 分析</li>
                     <pre><code>/"(?:[^\\"\r\n\f]|\\[\s\S])*"|'(?:[^\\'\n\r\f]|\\[\s\S])*'|(?:\/\/[^\r\n\f]+|\/\*[\s\S]*?(?:\*\/|$))|
-require\.async\(([\s\S]+?)(?=,\s*function\(|\))/g</code></pre>
+        require\.async\(([\s\S]+?)(?=,\s*function\(|\))/g</code></pre>
                     <li>component 分析</li>
                     <pre><code>/&lt;!--(?:(?!\[if [^\]]+\]&gt;)[\s\S])*?--&gt;|(&lt;\?php (?:(?!\?&gt;)[\s\S])*?)\$this-&gt;(component|load)\(\s*['"]([^'"]+)['"]([\s\S]*?(?:;|$))|
-&lt;component(?: [\s\S]*?name=['"]([^'"]+)['"])?[^&gt;]*&gt;(?:([\s\S]*?)&lt;\/component&gt;)?/ig</code></pre>
+        &lt;component(?: [\s\S]*?name=['"]([^'"]+)['"])?[^&gt;]*&gt;(?:([\s\S]*?)&lt;\/component&gt;)?/ig</code></pre>
+                </ul>
+            </div>
+        </div> -->
+        <div class="slide">
+            <div class="content">
+                <h1>练习题</h1>
+                <ul class="mt40">
+                    <li>/\d{1,3}/.test('9.9') 返回值？</li>
+                    <li>/^(0|[1-9]\d?)(\.\d{1,2})?$/ 含义？</li>
+                    <li>'12345678910'.replace(/(1)(2)(3)(4)(5)(6)(7)(8)(9)(10)/,'$11') 返回值？</li>
+                    <li>"12345678.99".replace(/(\d{1,3})(?=(\d{3})+\.)/g,"$1,") 有什么问题？</li>
                 </ul>
             </div>
         </div>
         <div class="slide">
             <div class="content">
-                <p class="center subject">Q & A</p>
+                <p class="center subject">Q &amp; A</p>
+                <h1><a href='https://github.com/hingsir/slider' target="_blank">PPT源代码</a></h1>
             </div>
         </div>
         <!-- <div class='slide'>
@@ -518,6 +520,8 @@ require\.async\(([\s\S]+?)(?=,\s*function\(|\))/g</code></pre>
     <script type="text/javascript" src='../libs/highlight/highlight.pack.js'></script>
     <script type="text/javascript" src='slider/slider.js'></script>
     <script type="text/javascript">
+    var now = new Date
+    $('#now').text(now.getFullYear() + '.' + (now.getMonth() + 1) + '.' + now.getDate())
     $('#wrap').slider();
     hljs.initHighlightingOnLoad();
 

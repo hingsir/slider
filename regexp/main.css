@@ -34,7 +34,8 @@ html,body{
     height:100%;
     position: relative;
     /*background: rgb(39,40,34);*/
-    background: url('bg.jpg') repeat-y;
+    background: url('bg.jpg');
+    background-size: 100% 100%;
     color: #fff;
     line-height: 50px;
 }

@@ -1,4 +1,4 @@
 ### slider
 简单的PPT演示
 
-###[演示地址](http://chexingyou.sinaapp.com/slider/regexp.html)
+###[演示地址](http://hingsir.github.io/slider/regexp.html)
